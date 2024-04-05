@@ -28,9 +28,19 @@
         </div>
       {% endfor %}
 
-      <div class="my-30">Total: {{ cart.total_price | money }}</div>
-      <button type="submit" name="update">Update</button>
-      <button type="submit" name="checkout">Checkout</button>
+      {% for block in section.blocks %}
+        {% case block.type %}
+          {% when 'subtotal' %}
+          <div class="my-30">Total: {{ cart.total_price | money }}</div>
+          {% when 'update_button' %}
+          <button type="submit" name="update">Update</button>
+          {% when 'checkout_button' %}
+          <button type="submit" name="checkout">Checkout</button>
+        {% endcase %}
+      {% endfor %}
+
+
+
     </form>
   </div>
 {% else %}
@@ -46,7 +56,7 @@
         "name": "Subtotal",
         "limit": 1
       }, {
-        "type": "update+button",
+        "type": "update_button",
         "name": "Update Button",
         "limit": 1
       }, {
