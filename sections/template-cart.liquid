@@ -1,0 +1,59 @@
+<div>Your cart</div>
+{% if cart.item_count > 0 %}
+  <div>
+    <form
+      action="{{routes.cart_url}}"
+      method="POST"
+      novalidate>
+      {% for item in cart.items %}
+        <div>
+          <a href="{{item.url}}">
+            <img src="{{item.image | img_url: 'medium'}}" alt="">
+            <h2>{{ item.product.title }}</h2>
+            <div class="bg-red-900">
+              <a href="{{routes.cart_change_url}}?line={{forloop.index}}&quantity=0">Remove</a>
+            </div>
+            <div style="display:flex;">
+              <p>Quantity</p>
+              <input
+                type="number"
+                name="updates[]"
+                value="{{item.quantity}}"
+                min="1"
+                max="6"
+                id="updates_{{ forloop.index }}">
+            </div>
+            <div>Price {{ item.line_price | money }}</div>
+          </a>
+        </div>
+      {% endfor %}
+
+      <div class="my-30">Total: {{ cart.total_price | money }}</div>
+      <button type="submit" name="update">Update</button>
+      <button type="submit" name="checkout">Checkout</button>
+    </form>
+  </div>
+{% else %}
+  No items in cart
+{% endif %}
+
+{% schema %}
+  {
+    "name": "Template Cart",
+    "blocks": [
+      {
+        "type": "subtotal",
+        "name": "Subtotal",
+        "limit": 1
+      }, {
+        "type": "update+button",
+        "name": "Update Button",
+        "limit": 1
+      }, {
+        "type": "checkout_button",
+        "name": "Checkout Button",
+        "limit": 1
+      }
+    ]
+  }
+{% endschema %}

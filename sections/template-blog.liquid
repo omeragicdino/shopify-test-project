@@ -1,0 +1,38 @@
+{% paginate blog.articles by section.settings.number_of_articles %}
+  {% for article in blog.articles %}
+    <div style="max-width: 200px; max-height: 320px; overflow: hidden;">
+      {% if article.image %}
+        <img src="{{article.image | img_url: 'medium'}}" alt="">
+      {% endif %}
+      <div>
+        {{ article.title }} {{ blog.articles_count }}
+      </div>
+      <div>
+        <p>{{ article.content | strip_html | truncatewords: 10 }}</p>
+      </div>
+    </div>
+  {% endfor %}
+
+
+  <div>
+    {% render 'pagination', pagination: paginate %}
+  </div>
+
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Blog",
+    "settings": [
+      {
+        "type": "range",
+        "id": "number_of_articles",
+        "step": 1,
+        "min": 1,
+        "max": 6,
+        "label": "Articles per page",
+        "default": 3
+      }
+    ]
+  }
+{% endschema %}
